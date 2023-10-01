@@ -7,10 +7,8 @@ import pygame
 from arena import Arena
 from grid_sprite import GridSprite, approach
 from spellbook import Spellbook
-import PIL
-import six
-import lief
-import cx_Logging
+import asyncio
+
 
 class Game:
 
@@ -229,14 +227,9 @@ class Game:
             self.screen = pygame.display.set_mode([WIDTH, HEIGHT])
         else:
             self.screen = pygame.display.set_mode([WIDTH, HEIGHT], pygame.FULLSCREEN)
-        # icon = load_image("Icon.png", scale=1)[0]
-        # icon.set_colorkey((255, 0, 0))
-        # pygame.display.set_icon(icon)
         pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
         pygame.mixer.music.set_volume(0.4)
         play_music("Spellbook.wav")
-        # self.font = pygame.font.SysFont("Calibri", 80)
-        # play_sound("Thunder.wav", False, 0.05)
         self.health_img = load_image("Health.png", 1)[0]
         self.game_over = load_image("GameOver.png", 2)
         self.score_box = load_image("ScoreBox.png", 1)[0]
@@ -263,6 +256,10 @@ class Game:
         self.run()
 
     def run(self):
+        """ Run the game asynchronously """
+        asyncio.run(self._run())
+
+    async def _run(self):
         """ Iteratively call update """
         clock = pygame.time.Clock()
         self.pause = False
@@ -278,6 +275,7 @@ class Game:
             dt = clock.tick(TIME_STEP)
             self.update(dt, pygame.key.get_pressed())
             pygame.display.update()
+            await asyncio.sleep(0)
 
 
 if __name__ == '__main__':
