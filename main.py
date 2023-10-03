@@ -232,7 +232,7 @@ class Game:
         play_music("Spellbook.wav")
         self.health_img = load_image("Health.png", 1)[0]
         self.game_over = load_image("GameOver.png", 2)
-        self.score_box = load_image("ScoreBox.png", 1)[0]
+        self.score_box = load_image("Scorebox.png", 1)[0]
         self.game_over_hover = load_image("GameOverSelected.png", 2)
         self.end_font = pygame.font.Font("fonts/VINERITC.TTF", 84)
         self.score_font = pygame.font.Font("fonts/VINERITC.TTF", 40)
@@ -253,13 +253,9 @@ class Game:
         self.your_turn = False
 
         self.reset()
-        self.run()
+        asyncio.run(self.run())
 
-    def run(self):
-        """ Run the game asynchronously """
-        asyncio.run(self._run())
-
-    async def _run(self):
+    async def run(self):
         """ Iteratively call update """
         clock = pygame.time.Clock()
         self.pause = False
